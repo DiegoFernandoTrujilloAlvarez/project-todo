@@ -14,6 +14,9 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from app.models.task_model import Tasks
 
+from fastapi.middleware.cors import CORSMiddleware
+
+
 load_dotenv()
 
 EMAIL_CONFIG = {
@@ -55,6 +58,7 @@ async def check_daily_tasks():
             to = tasks[0].owner.email
             body = f"Hola {name}, \n\nTienes las siguientes tareas para hoy:\n{task_list}"
             await send_email(to=to, subject="Recodatorio de tareas diarias", body=body)
+            
 print("Crear db")
 Base.metadata.create_all(bind=engine)
 print("Terminó de crear")
@@ -63,13 +67,20 @@ print("Terminó de crear")
 async def lifespan(app: FastAPI):
     # Iniciar el scheduler
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(check_daily_tasks,  'interval', seconds=60)  # Ejecutar diario a las 8 AM
+    scheduler.add_job(check_daily_tasks, 'cron', hour=8, minute=0)  # Ejecutar diario a las 8 AM
     scheduler.start()
     yield
     # Detener al cerrar
     scheduler.shutdown()
 
 app = FastAPI(lifespan=lifespan, title="Proyecto TODO", version="1.0", debug=True)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # URL de tu frontend en desarrollo
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Registrar los routers
 app.include_router(users)
