@@ -26,6 +26,7 @@ def get_task_by_id(task_id: int, current_user: Annotated[Users, Depends(get_curr
 @tasks.post("/", status_code=HTTP_201_CREATED)
 def create_task(user: TaskRequest, current_user: Annotated[Users, Depends(get_current_user)], db: Session = Depends(get_db)):
     task_service = TasksService(db=db)
+    user.user_id = current_user.user_id
     task_service.create_task(user)
     return Response(status_code=HTTP_201_CREATED)
 

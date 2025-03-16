@@ -1,6 +1,7 @@
 from ..models.task_model import Tasks
 from .base_service import BaseService
 from ..schemas.tasks_schema import TaskRequest, TaskUpdate
+import datetime
 
 
 class TasksService(BaseService):
@@ -15,6 +16,7 @@ class TasksService(BaseService):
 
     def create_task(self, task: TaskRequest):
         """Crea una nueva tarea"""
+        task.created_on = datetime.datetime.now().date()
         new_task = Tasks(**task.model_dump())        
         self.db.add(new_task)
         self.db.commit()

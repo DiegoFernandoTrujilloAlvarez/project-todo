@@ -3,10 +3,10 @@ from datetime import date
 
 
 class TaskRequest(BaseModel):
-    user_id: int
     description: str
-    created_on: date
     date_to_do: date
+    user_id: int | None = Field(default=None)
+    created_on: date | None = Field(default=None)
 
 
 class TaskResponde(TaskRequest):
