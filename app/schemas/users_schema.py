@@ -5,6 +5,7 @@ class UserRequest(BaseModel):
     firt_name: str
     last_name: str
     email: str
+    password: str
 
 
 class UserResponde(UserRequest):
@@ -18,6 +19,7 @@ class UserUpdate(BaseModel):
     firt_name: str | None = Field(default=None)
     last_name: str | None = Field(default=None)
     email: str | None = Field(default=None)
+    password: str | None = Field(default=None)
 
 class ReturnPatch(BaseModel):
     message: str

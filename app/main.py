@@ -1,6 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from app.routers.users_router import users
 from app.routers.tasks_router import tasks
+from app.routers.auth_router import oauth
 from app.config.dbconfig import Base, engine, get_db
 import time
 from datetime import datetime, date
@@ -15,6 +16,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from app.models.task_model import Tasks
 
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
 
 load_dotenv()
@@ -85,10 +87,8 @@ app.add_middleware(
 # Registrar los routers
 app.include_router(users)
 app.include_router(tasks)
+app.include_router(oauth)
 
-@app.get("/{number}")
-async def root(number: int):
-    print(f"ROOT {number}")
-    time.sleep(5)
-    print(f"despues {number}")
-    return "Bievenido a la aplicación TODO"
+@app.get("/")
+async def root():
+    return RedirectResponse(url="/docs")
