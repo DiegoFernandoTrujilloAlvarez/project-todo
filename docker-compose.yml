@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  todo-app:
+    build: .
+    ports: 
+      - "8000:8000"
+    environment:
+      - DB_HOST=ep-lively-dew-a5k3c33r-pooler.us-east-2.aws.neon.tech
+      - DB_NAME=neondb
+      - DB_PASSWORD=npg_vgCzlG8E9dZn
+      - DB_PORT=5432
+      - DB_USER=neondb_owner
+      - KEY_GMAIL=txsd wjfh dzlo umuj
+      - SECRET_KEY_JWT=ee270657b0858ad814fdc08cb1beae7bf739f616182732c2a8fd0c1086398c53c7cf76b1e844b824d83d40400607475a35eb4ee46848ae307ab5ee2279c18049
+      - ALGORITHM_JWT=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES_JWT=30
